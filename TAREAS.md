@@ -6,3 +6,8 @@ Repositorio para hacer la práctica de progra.
 * Luis:
 * Nacho:
 * Pedro:
+
+* Tareas sin asignar:
+  -
+  -
+  -
