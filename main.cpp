@@ -7,6 +7,7 @@
     APUNTE: hemos quitado todas las tildes para que no muestre errores por pantalla
     
 */
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -307,31 +308,11 @@ bool login(const vector<Cliente> &clientes, vector<Cuenta> &cuentas, string &dni
 
 
 
-bool cumpleRequisitos(const string &password)
-{
-    bool tieneMayuscula = false;
-    bool tieneMinuscula = false;
-    bool tieneNumero = false;
-    bool tieneCaracterEspecial = false;
-
-    for (char c : password)
-    {
-        if (isupper(c))
-        {
-            tieneMayuscula = true;
-        }
-        else if (islower(c))
-        {
-            tieneMinuscula = true;
-        }
-        else if (isdigit(c))
-        {
-            tieneNumero = true;
-        }
-        else if (ispunct(c))
-        {
-            tieneCaracterEspecial = true;
-        }
+bool cumpleRequisitos(const string &password) {
+    return any_of(password.begin(), password.end(), ::isupper) &&
+           any_of(password.begin(), password.end(), ::islower) &&
+           any_of(password.begin(), password.end(), ::isdigit) &&
+           any_of(password.begin(), password.end(), ::ispunct);
     }
 
     return tieneMayuscula && tieneMinuscula && tieneNumero && tieneCaracterEspecial;
