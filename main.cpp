@@ -309,14 +309,14 @@ bool login(const vector<Cliente> &clientes, vector<Cuenta> &cuentas, string &dni
 
 
 bool cumpleRequisitos(const string &password) {
-    return any_of(password.begin(), password.end(), ::isupper) &&
-           any_of(password.begin(), password.end(), ::islower) &&
-           any_of(password.begin(), password.end(), ::isdigit) &&
-           any_of(password.begin(), password.end(), ::ispunct);
-    }
+    bool tieneMayuscula = any_of(password.begin(), password.end(), ::isupper);
+    bool tieneMinuscula = any_of(password.begin(), password.end(), ::islower);
+    bool tieneNumero = any_of(password.begin(), password.end(), ::isdigit);
+    bool tieneCaracterEspecial = any_of(password.begin(), password.end(), ::ispunct);
 
     return tieneMayuscula && tieneMinuscula && tieneNumero && tieneCaracterEspecial;
 }
+
 
 string pedirContraseña(){
     string password;
