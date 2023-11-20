@@ -27,7 +27,7 @@ public:
     void Añadir_Fondos();
     void Retirar_Fondos();
     void GetName();
-    Cuenta() {}
+    //Cuenta() {}
 };
 
 void cargaDatosClientes(vector<Cliente> &cliente); // realizada por pablo
