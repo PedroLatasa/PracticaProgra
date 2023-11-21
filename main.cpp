@@ -11,92 +11,55 @@
 int main() // realizada por nacho basically
 {
     vector<Cliente> clientes;
-    vector<Cuenta> cuentas; // pero debería hacerse desde clientes... REVISAR
-    cargaDatosClientes(clientes);
-    // cargaDatosCuentas(cuentas);
+    vector<Cuenta> cuentas; // pero deberia hacerse desde clientes... REVISAR
 
-    int opcion = menuInicial();
+    cargaDatosClientes(clientes);
+    cargaDatosCuentas(cuentas);
+
+    int opcion; 
+    string dniActual; // esta variable es para saber el usuario que está usando el programa en cada momento
+
+    do{
+    
+    opcion = menuInicial();
     switch (opcion)
     {
-        case 1:
-        {
-            if (login()) // sera "if(login())", pero hasta que este realizado el metodo en cuestion lo tomamos como true
-            {
-                cout << "Inicio de sesión exitoso." << endl;
+        case 1: {
+            if (login(clientes, cuentas, dniActual)) {  // sera "if(login())", pero hasta que este realizado el metodo en cuestion lo tomamos como true 
 
+                cout << "Inicio de sesion exitoso." << endl;
                 int eleccion = menuPrincipal();
-                switch (eleccion)
-                {
-                case 1:
-                    // ingresar_dinero();
-                break;
-                case 2:
-                    // retirar_dinero();
-                break;
-                case 3:
-                    // realizar_transferencia();
-                break;
-                case 4:
-                    // pedir_préstamo();
-                break;
-                case 5:
-                    // invertir();
-                break;
-                case 0:
-                    cout << "Sesión cerrada. ¡Hasta luego!" << endl;
-                break;
-                default:
-                    cout << "Opción no válida. Por favor, seleccione una opción válida." << endl;
-                break;
-                }
+                operaciones(eleccion); 
             }
-
-            else
-            {
-                cout << "Error de inicio de sesión." << endl;
+            else{
+                cout << "Error de inicio de sesion." << endl;
             }
         }
         break;
-        case 2:
-        {
-            // crear cuenta();
 
-            int eleccion = menuPrincipal();
-            switch (eleccion)
-            {
-            case 1:
-                // ingresar_dinero();
-            break;
-            case 2:
-                // retirar_dinero();
-            break;
-            case 3:
-                // realizar_transferencia();
-            break;
-            case 4:
-                // pedir_préstamo();
-            break;
-            case 5:
-                // invertir();
-            break;
-            case 0:
-                cout << "Sesión cerrada. ¡Hasta luego!" << endl;
-            break;
-            default:
-                cout << "Opción no válida. Por favor, seleccione una opción válida." << endl;
-            break;
+                
+        case 2:{
+            if(registro(clientes, cuentas)){
+                cout << "Registro exitoso. Ahora puede iniciar sesion." << endl;
+                
             }
+            else{
+                cout <<"Error en el registro." << endl;
+            }
+
+            
         }
-            break;
+        break;
+
         case 0:
-            cout << "Gracias por usar nuestro servicio. ¡Hasta luego!" << endl;
+            cout << "Gracias por usar nuestro servicio. Hasta luego!" << endl;
         break;
-        default:
-            cout << "Opción no válida. Por favor, seleccione una opción válida." << endl;
-        break;
+
+        default:{
+            cout << "Opcion no valida. Por favor, seleccione una opcion valida." << endl;
+        } break;
     }
+    } while(opcion != 0);
 
     return 0;
 }
-
-
