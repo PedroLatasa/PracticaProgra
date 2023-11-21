@@ -37,6 +37,9 @@ int menuPrincipal();                                                            
 int operaciones(int eleccion);
 bool login(const vector<Cliente> &clintes, vector<Cuenta> &cuentas, string &dniActual);    // realizada por pablo y pedro
 bool registro(vector<Cliente> &clientes, vector<Cuenta> &cuentas);                         // realizada por pedro
+bool cumpleRequisitos(const string &password);                                             // realizada por pedro
+string pedirContrasenna();                                                                 // realizada por pedro
+bool registro(vector<Cliente> &clientes, vector<Cuenta> &cuentas);                         // realizada por pedro
 
 #include "libreria.cpp"
 #endif
