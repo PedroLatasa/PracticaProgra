@@ -30,11 +30,13 @@ public:
     //Cuenta() {}
 };
 
-void cargaDatosClientes(vector<Cliente> &cliente); // realizada por pablo
-void cargaDatosCuentas(vector<Cuenta> &c);         // realizada por pablo
-int menuInicial();                                 // realizada por jacobo
-int menuPrincipal();                               // realizada por jacobo
-bool login();                                      // realizada por pablo
+void cargaDatosClientes(vector<Cliente> &cliente);                                         // realizada por pablo
+void cargaDatosCuentas(vector<Cuenta> &c);                                                 // realizada por pablo
+int menuInicial();                                                                         // realizada por jacobo
+int menuPrincipal();                                                                       // realizada por jacobo
+int operaciones(int eleccion);
+bool login(const vector<Cliente> &clintes, vector<Cuenta> &cuentas, string &dniActual);    // realizada por pablo y pedro
+bool registro(vector<Cliente> &clientes, vector<Cuenta> &cuentas);                         // realizada por pedro
 
 #include "libreria.cpp"
 #endif
