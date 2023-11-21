@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <cctype> // para las funciones de char, pero es necesario?
 using namespace std;
 
 class Cuenta // clase realizada por luis, con algunos metodos de latasa
