@@ -70,6 +70,41 @@ int menuPrincipal()
     return eleccion;
 }
 
+int operaciones(int eleccion)
+{
+    switch (eleccion)
+    {
+    case 1:
+        // ingresar_dinero();
+        break;
+
+    case 2:
+        // retirar_dinero();
+        break;
+
+    case 3:
+        // realizar_transferencia();
+        break;
+
+    case 4:
+        // pedir_préstamo();
+        break;
+
+    case 5:
+        // invertir();
+        break;
+
+    case 0:
+        cout << "Sesion cerrada. Hasta luego!" << endl;
+        break;
+
+    default:
+        cout << "Opcion no valida. Por favor, seleccione una opción valida." << endl;
+        break;
+    }
+    return 0;
+}
+
 void cargaDatosClientes(vector<Cliente> &cliente)
 {
     int numClientes = 0;
