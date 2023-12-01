@@ -9,6 +9,7 @@ using namespace std;
 #include "Cuenta.cpp"
 #include "Cliente.cpp"
 
+void interfaz();
 void cargaDatosClientes(vector<Cliente> &cliente);                                         // realizada por pablo
 void cargaDatosCuentas(vector<Cuenta> &c);                                                 // realizada por pablo
 int menuInicial();                                                                         // realizada por jacobo
