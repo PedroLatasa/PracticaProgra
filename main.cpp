@@ -25,7 +25,8 @@ int main() // realizada por nacho basically
     switch (opcion)
     {
         case 1: {
-            if (login(clientes, cuentas, dniActual)) {  // sera "if(login())", pero hasta que este realizado el metodo en cuestion lo tomamos como true 
+            int posicionCliente = login(clientes);
+            if (posicionCliente != -1) {  // sera "if(login())", pero hasta que este realizado el metodo en cuestion lo tomamos como true 
 
                 cout << "Inicio de sesion exitoso." << endl;
                 int eleccion = menuPrincipal();
