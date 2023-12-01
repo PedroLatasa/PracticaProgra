@@ -1,30 +1,5 @@
 #include "libreria.hpp"
 
-void Cuenta ::Hacer_Transferencia()
-{
-}
-
-void Cuenta ::Añadir_Fondos()
-{
-    float cantidad;
-    cout << "Escriba la cantidad de fondos que desee añadir: " << endl;
-    cin >> cantidad;
-    Fondos += cantidad;
-}
-
-void Cuenta ::Retirar_Fondos()
-{
-    float cantidad;
-    cout << "Escriba la cantidad de fondos que desee retirar: " << endl;
-    cin >> cantidad;
-    Fondos -= cantidad;
-}
-
-void Cuenta ::GetName()
-{
-    cout << "El nombre de usuario es " + string(Nombre_Usuario) << endl;
-}
-
 int menuInicial()
 {
     int opcion;
@@ -121,6 +96,7 @@ void cargaDatosClientes(vector<Cliente> &cliente)
             archivo >> c.apellido1;
             archivo >> c.apellido2;
             archivo >> c.nombre;
+            archivo >> c.contrasenna;
             cliente.push_back(c);
         }
         archivo.close();
@@ -142,8 +118,8 @@ void cargaDatosCuentas(vector<Cuenta> &c)
         for (int i = 0; i < numCuentas; i++)
         {
             Cuenta cta;
-            // archivo >> cta.num;
-            // archivo >> cta.saldo;
+            // archivo >> c.num;
+            // archivo >> c.saldo;
             // archivo >> c.numTlf;
             // c.push_back(c);
         }
@@ -155,13 +131,23 @@ void cargaDatosCuentas(vector<Cuenta> &c)
     }
 }
 
-#define DNI_PRUEBA "pablo"
-#define PASS_PRUEBA "aloha"
+int buscarCliente(vector<Cliente> clientes, string dni){
+    int pos = -1; // en caso de no encontrar un cliente con dicho dni devuelve -1
+    for(int i= 0; i < clientes.size(); i++){
+        if (clientes.at(i).dni == dni) {
+            pos = i;
+            i = clientes.size();
+        }
+    }
 
-bool login(const vector<Cliente> &clientes, vector<Cuenta> &cuentas, string &dniActual) { // QQQQQQQQQQQQQQ??????????????????
+    return pos;
+}
+
+int login(vector<Cliente> clientes) {
     string dni, password;
     int contador = 0;
     bool isIn = false;
+    int posicion;
 
     do {
         system("clear");
@@ -172,21 +158,9 @@ bool login(const vector<Cliente> &clientes, vector<Cuenta> &cuentas, string &dni
         cout << "\tPassword: ";
         cin >> password;
 
-        for (size_t i = 0; i < clientes.size(); ++i) {
-            if (DNI_PRUEBA == dni && clientes[i].cuentas.size() > 0) {
-                // Verificar la contraseña
-                for (size_t j = 0; j < clientes[i].cuentas.size(); ++j) {
-                    if (clientes[i].cuentas[j].contraseña == password) {
-                        isIn = true;
-                        dniActual = dni;
-                        break;
-                    }
-                }
-            }
-
-            if (isIn) {
-                break;
-            }
+        posicion = buscarCliente(clientes, dni);
+        if(posicion != -1 && clientes.at(posicion).contrasenna == password){
+            isIn = true;
         }
 
         if (!isIn) {
@@ -197,10 +171,11 @@ bool login(const vector<Cliente> &clientes, vector<Cuenta> &cuentas, string &dni
     } while (contador < 3 && !isIn);
 
     if (!isIn) {
+        posicion = -1;
         cout << "No ha podido acceder al sistema." << endl;
     }
 
-    return isIn;
+    return posicion;
 }
 
 bool cumpleRequisitos(const string &password)
@@ -285,16 +260,15 @@ bool registro(vector<Cliente> &clientes, vector<Cuenta> &cuentas) {
     cin >> nuevoCliente.apellido1;
     cout << "Ingrese el segundo apellido: ";
     cin >> nuevoCliente.apellido2;
-
     // Solicitar y almacenar la contraseña usando la función pedirContraseña
     string password = pedirContrasenna();
+    nuevoCliente.contrasenna = password;
 
     // Agregar el nuevo cliente y crear una nueva cuenta
     nuevoCliente.cuentas.push_back(Cuenta());  // Crear una cuenta vacía asociada al nuevo cliente
     nuevoCliente.cuentas.back().Nombre_Usuario = nuevoCliente.nombre; // Usar el nombre como nombre de usuario por ahora
     nuevoCliente.cuentas.back().Numero_Tarjeta = cuentas.size() + 1;    // Simplemente incrementar el número de tarjeta
-    nuevoCliente.cuentas.back().Fondos = 0;                             // Nuevo usuario comienza con saldo cero
-    nuevoCliente.cuentas.back().contraseña = password;                  // Almacenar la contraseña en la cuenta
+    nuevoCliente.cuentas.back().Fondos = 0;                             // Nuevo usuario comienza con saldo cero                // Almacenar la contraseña en la cuenta
 
     clientes.push_back(nuevoCliente);  // Agregar el nuevo cliente al vector de clientes
 
