@@ -1,2 +1,2 @@
 # PracticaProgra
-Repositorio para hacer la práctica de progra. 
+Repositorio para hacer la práctica de Proyectos de Programación. 
