@@ -1,5 +1,3 @@
-# PracticaProgra
-Repositorio para hacer la práctica de progra. 
 ## TAREAS
 ~~1. Hacer headers separados para clases, con sus métodos juntos (como en java más o menos).~~
 
