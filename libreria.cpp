@@ -166,8 +166,9 @@ void cargaDatosClientes(vector<Cliente> &cliente)
                     archivo2 >> cta.Numero_Tarjeta;
                     archivo2 >> cta.Nombre_Usuario;
                     archivo2 >> cta.Fondos;
-                    if (cta.Nombre_Usuario == c.dni)
+                    if (cta.Nombre_Usuario == c.dni){
                         c.cuentas.push_back(cta);
+                    }
                 }
                 archivo2.close();
             }
