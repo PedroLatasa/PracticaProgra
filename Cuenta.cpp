@@ -4,8 +4,8 @@ class Cuenta { // clase realizada por luis, con algunos metodos de latasa
     private:
 
     public:
-        string Nombre_Usuario;
-        float Fondos, Numero_Tarjeta;
+        string Nombre_Usuario, Numero_Tarjeta;
+        float Fondos;
 
         void hacer_Transferencia() {
         }
