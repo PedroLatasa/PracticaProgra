@@ -17,6 +17,7 @@ int operaciones(int eleccion, Cliente c);
 int buscarCliente(vector<Cliente> clientes, string dni);
 int login(const vector<Cliente> clientes);    // realizada por pablo y pedro
 bool registro(vector<Cliente> &clientes);                         // realizada por pedro
+bool esDNIValido(const string& dni) ;
 bool cumpleRequisitos(const string &password);                                             // realizada por pedro
 string pedirContrasenna();                                                                 // realizada por pedro
 bool registro(vector<Cliente> &clientes, vector<Cuenta> &cuentas);                         // realizada por pedro
