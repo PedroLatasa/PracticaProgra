@@ -1,5 +1,5 @@
 ## TAREAS
-~~1. Hacer headers separados para clases, con sus métodos juntos (como en java más o menos).~~
+1. Bases de datos 
 
 2. Arreglar la generación de número de trajeta cuando se crea una cuenta.
 
@@ -11,13 +11,21 @@
 
 6. ¡Herencia!
 
-7. Excepciones.
+7. Mejorar clase cuenta (hacer transferencia) 
 
-8. (Si sobra tiempo) Incluir algún test.
+8. Incluir (mínimo 3 porque es obligatorio) de estas herramientas:
+   - Meter clases abstractas
+   - Meter aritmética de punteros
+   - Meter sobrecarga de funciones u operadores
+   - Meter gestión de excepciones
+   - Meter Test unitarios
+
+9. Realizar el informe.
+
 
 * Jaco:
-* Pablo:
+* Pablo: 1
 * Luis:
 * Nacho:
-* Pedro:
+* Pedro: 7
 
