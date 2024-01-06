@@ -67,6 +67,8 @@ int menuInicial()
 
         cout << "\nSelecciona una opcion: ";
         cin >> opcion;
+
+
         if (opcion < 0 || opcion > 2)
         {
             cout << "Opcion invalida" << endl;
@@ -102,50 +104,54 @@ int operaciones(int eleccion, Cliente c)
 {
     Cuenta cta = c.cuentas.at(0);
     if (c.cuentas.size() > 1) cta = c.cuentas.at(eligeCuenta(c));
+
     
-    switch (eleccion)
-    {
-    case 1:
-        // ingresar_dinero();
-        break;
+        switch (eleccion)
+        {
+        case 1:
+            cta.añadir_Fondos();
+            break;
 
-    case 2:
-        // retirar_dinero();
-        break;
+        case 2:
+            cta.retirar_Fondos();
+            break;
 
-    case 3:
-        // realizar_transferencia();
-        break;
+        case 3:
+            cta.hacer_Transferencia();
+            break;
 
-    case 4:
-        // pedir_préstamo();
-        break;
+        case 4:
+            // pedir_préstamo();
+            break;
 
-    case 5:
-        // invertir();
-        break;
+        case 5:
+            // invertir();
+            break;
 
-    case 0:
-    {
-        cout << "Sesion cerrada. Hasta luego!" << endl;
-    }
-    break;
+        case 0:
+            cout << "Sesión cerrada. Hasta luego!" << endl;
+            break;
 
-    default:
-        cout << "Opcion no valida. Por favor, seleccione una opcion valida." << endl;
-        break;
-    }
-    return 0;
+        default:
+            cout << "Opción no válida. Por favor, seleccione una opción válida." << endl;
+            break;
+        }
+
+        eleccion = menuPrincipal();
+   
+   return 0;
 }
+
 
 void cargaDatosClientes(vector<Cliente> &cliente)
 {
     int numClientes = 0, numCuentas = 0;
     ifstream archivo;
-    archivo.open("datosClientes.txt");
+    archivo.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Documentos\\PracticaProgra\\datosClientes.txt"); //aquí poner "datosClentes.txt"
     if (archivo.is_open())
     {
         archivo >> numClientes;
+
         for (int i = 0; i < numClientes; i++)
         {
             Cliente c;
@@ -156,7 +162,7 @@ void cargaDatosClientes(vector<Cliente> &cliente)
             archivo >> c.contrasenna;
 
             ifstream archivo2;
-            archivo2.open("datosCuentas.txt");
+            archivo2.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Documentos\\PracticaProgra\\datosCuentas.txt");//aquí poner "datos.cuentas.txt"
             if (archivo2.is_open())
             {
                 archivo2 >> numCuentas;
@@ -166,6 +172,7 @@ void cargaDatosClientes(vector<Cliente> &cliente)
                     archivo2 >> cta.Numero_Tarjeta;
                     archivo2 >> cta.Nombre_Usuario;
                     archivo2 >> cta.Fondos;
+
                     if (cta.Nombre_Usuario == c.dni){
                         c.cuentas.push_back(cta);
                     }
@@ -202,6 +209,7 @@ int buscarCliente(vector<Cliente> clientes, string dni)
     return pos;
 }
 
+
 int login(vector<Cliente> clientes)
 {
     string dni, password;
@@ -211,11 +219,14 @@ int login(vector<Cliente> clientes)
 
     do
     {
-        system("clear");
         cout << "\n\t\t\tLOGIN DE USUARIO\n";
         cout << "\t\t\t-----------------\n";
         cout << "\n\tDNI: ";
         cin >> dni;
+        //esto sirve para cambiar una posible minúscula por mayúscula en el DNI
+        if (!dni.empty() && isalpha(dni.back())) {
+            dni.back() = toupper(dni.back());
+        }
         cout << "\tPassword: ";
         cin >> password;
 
@@ -301,14 +312,38 @@ string pedirContrasenna()
     } while (true);
 }
 
+bool esDNIValido(const string& dni) {
+    if (dni.length() != 9) {
+        return false;
+    }
+
+    for (int i = 0; i < 8; ++i) {
+        if (!isdigit(dni[i])) {
+            return false;
+        }
+    }
+
+    if (!isalpha(dni[8])) {
+        return false;
+    }
+
+    return true;
+}
+
 bool registro(vector<Cliente> &clientes)
 {
     Cliente nuevoCliente;
     bool registrado = false;
 
     cout << "Registro de nuevo usuario\n";
-    cout << "Ingrese el DNI del nuevo usuario: ";
-    cin >> nuevoCliente.dni;
+    do {
+        cout << "Ingrese el DNI del nuevo usuario (8 numeros y 1 letra): ";
+        cin >> nuevoCliente.dni;
+
+        if (!esDNIValido(nuevoCliente.dni)) {
+            cout << "Formato de DNI no valido. Por favor, intentelo de nuevo." << endl;
+        }
+    } while (!esDNIValido(nuevoCliente.dni));
 
     // Verificar si el usuario ya existe
     for (const auto &cliente : clientes) // ¿auto?
