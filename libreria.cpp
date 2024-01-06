@@ -61,15 +61,15 @@ int menuInicial()
         cout << "\t\t\t*********************\n";
         cout << "\t\t\t Bienvenido al banco\n";
         cout << "\t\t\t*********************\n";
-        cout << "\n\t1. Iniciar sesión\n";
+        cout << "\n\t1. Iniciar sesion\n";
         cout << "\t2. Crear cuenta bancaria\n";
         cout << "\t0. Salir\n";
 
-        cout << "\nSelecciona una opción: ";
+        cout << "\nSelecciona una opcion: ";
         cin >> opcion;
         if (opcion < 0 || opcion > 2)
         {
-            cout << "Opción invalida" << endl;
+            cout << "Opcion invalida" << endl;
         }
     } while (opcion < 0 || opcion > 2);
     return opcion;
@@ -84,15 +84,15 @@ int menuPrincipal()
         cout << "\n\t1. Ingresar dinero\n";
         cout << "\t2. Retirar dinero\n";
         cout << "\t3. Realizar transferencia\n";
-        cout << "\t4. Pedir préstamo\n";
+        cout << "\t4. Pedir prestamo\n";
         cout << "\t5. Invertir\n";
-        cout << "\t0. Cerrar sesión\n";
+        cout << "\t0. Cerrar sesion\n";
 
-        cout << "\nSelecciona una opción: ";
+        cout << "\nSelecciona una opcion: ";
         cin >> eleccion;
         if (eleccion < 0 || eleccion > 5)
         {
-            cout << "Opción inválida" << endl;
+            cout << "Opcion invalida" << endl;
         }
     } while (eleccion < 0 || eleccion > 5);
     return eleccion;
@@ -132,7 +132,7 @@ int operaciones(int eleccion, Cliente c)
     break;
 
     default:
-        cout << "Opcion no valida. Por favor, seleccione una opción valida." << endl;
+        cout << "Opcion no valida. Por favor, seleccione una opcion valida." << endl;
         break;
     }
     return 0;
