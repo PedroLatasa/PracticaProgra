@@ -4,6 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <cctype> // para las funciones de char, pero es necesario?
+#include <random>
 //#include <cstdlib>
 using namespace std;
 #include "Activo.cpp"
@@ -25,6 +26,7 @@ bool registro(vector<Cliente> &clientes, vector<Cuenta> &cuentas);              
 int eligeCuenta(Cliente c);
 void guardaDatos(vector<Cliente> clientes, vector<Cuenta> cuentas);
 void guardaCuentas(vector<Cuenta> cuentas);
+long long generarNumeroTarjeta();
 
 #include "libreria.cpp"
 #endif
