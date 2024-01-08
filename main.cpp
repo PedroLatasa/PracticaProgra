@@ -12,7 +12,6 @@
 
 int main() // realizada por nacho basically
 {
-
     interfaz();
     return 0;
 }
