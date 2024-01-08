@@ -4,73 +4,35 @@
 class Cliente {
     protected:
         string dni, nombre, apellido1, apellido2, contrasenna;
-    public:
         vector<Cuenta> cuentas;
+    public:
 
-        Cliente(){}
-
-        Cliente (string d, string n, string a1, string a2, string c){
+        Cliente (string d, string n, string a1, string a2, string c, vector<Cuenta> ct){
             string dni = d;
             nombre = n;
             apellido1 = a1;
             apellido2 = a2;
             contrasenna = c;
-        }
+            cuentas = ct;
 
-        string getDNI()
-        {
-            return dni;
         }
-
-        void setDNI(string dni){
-            this->dni = dni;
-        }
-
-        string getNombre()
-        {
-            return nombre;
-        }
-
-        void setNombre(string nombre){
-            this->nombre = nombre;
-        }
-
-        string getApell1()
-        {
-            return apellido1;
-        }
-
-        void setApell1(string apell1){
-            apellido1 = apell1;
-        }
-
-        string getApell2()
-        {
-            return apellido2;
-        }
-
-        void setApell2(string apell2){
-            apellido2 = apell2;
-        }
-
-        string getPass()
-        {
-            return contrasenna;
-        }
-
-        void setPass(string pass){
-            contrasenna = pass;
-        }
-
+        // Cliente() {}
 };
 
 class Cliente_Inversor : private Cliente{
     vector<Activo> activos;
-    float rentabilidad;
+    float rentabilidad(){
+        float a = 0;
+        float tamano = activos.size();
+        for (size_t i = 0; i < activos.size(); i++){
+            a += activos[i].rentabilidad();
+        }
+        return a / tamano;
+    };
 
     public:
         void muestra_rentabilidad(){
-            cout << "La rentabilidad de " << nombre << " " << apellido1 << " " << apellido2 << " es de: " << rentabilidad << "%. " << endl;
+            cout << "La rentabilidad de " << nombre << " " << apellido1 << " " << apellido2 << " es de: " << rentabilidad() << "%. " << endl;
         }
 
 };
