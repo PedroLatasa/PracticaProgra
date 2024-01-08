@@ -8,8 +8,6 @@
 
 #include "libreria.hpp"
 
-
-
 int main() // realizada por nacho basically
 {
     interfaz();
