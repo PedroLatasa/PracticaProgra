@@ -53,7 +53,9 @@ void interfaz()
         }
         break;
         }
+        
     } while (opcion != 0);
+    //guardaDatos(clientes, cuentas); // pablo mira donde ponerlo mejor
 }
 
 int menuInicial()
@@ -89,7 +91,7 @@ int menuPrincipal()
         cout << "\t3. Realizar transferencia\n";
         cout << "\t4. Inversiones\n";
         cout << "\t5. Informacion de la cuenta\n";
-        cout << "\t0. Cerrar sesión\n";
+        cout << "\t0. Cerrar sesion\n";
 
         cout << "\nSelecciona una opcion: ";
         cin >> eleccion;
@@ -149,7 +151,7 @@ void cargaDatosClientes(vector<Cliente> &cliente, vector<Cuenta> &cuentas)
     string dni, apell1, apell2, nombre, pass;
     float saldo = 0;
     ifstream archivo;
-    archivo.open("datosClientes.txt"); 
+    archivo.open("datosClientes.txt"); //para windows copiar el path
     if (archivo.is_open())
     {
         archivo >> numClientes;
@@ -168,7 +170,7 @@ void cargaDatosClientes(vector<Cliente> &cliente, vector<Cuenta> &cuentas)
             c.setNombre(nombre);
 
             ifstream archivo2;
-            archivo2.open("datosCuentas.txt"); 
+            archivo2.open("datosCuentas.txt"); //para windows copiar el path
             if (archivo2.is_open())
             {
                 archivo2 >> numCuentas;
@@ -401,7 +403,7 @@ void guardaDatos(vector<Cliente> clientes, vector<Cuenta> cuentas)
 { // Guarda los datos
     guardaCuentas(cuentas);
     ofstream archivo;
-    archivo.open("datosClientes.txt"); //datosClientes.txt
+    archivo.open("datosClientes.txt"); //para windows copiar el path
     archivo << clientes.size() << endl;
     for (int i = 0; i < clientes.size(); i++)
     {
@@ -409,7 +411,7 @@ void guardaDatos(vector<Cliente> clientes, vector<Cuenta> cuentas)
         archivo << " " << clientes.at(i).getApell1();
         archivo << " " << clientes.at(i).getApell2();
         archivo << " " << clientes.at(i).getNombre();
-        archivo << " " << clientes.at(i).getPass();         
+        archivo << " " << clientes.at(i).getPass() << endl;         
     }
     archivo.close();
 }
@@ -417,13 +419,13 @@ void guardaDatos(vector<Cliente> clientes, vector<Cuenta> cuentas)
 void guardaCuentas(vector<Cuenta> cuentas)
 {
     ofstream archivo;
-    archivo.open("datosCuentas.txt"); //datosCuentas.txt
+    archivo.open("datosCuentas.txt"); //para windows copiar el path
     archivo << cuentas.size() << endl;
     for (int i = 0; i < cuentas.size(); i++)
     {
         archivo << cuentas.at(i).Numero_Tarjeta;
-        archivo << " " << cuentas.at(i).Nombre_Usuario;
-        archivo << " " << cuentas.at(i).getFondos();      
+        archivo << " " << cuentas.at(i).Nombre_Usuario <<" ";
+        archivo << " " << cuentas.at(i).getFondos() << endl;      
     }
     archivo.close();
 }
