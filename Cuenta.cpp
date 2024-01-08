@@ -2,11 +2,17 @@
 
 class Cuenta { // clase realizada por luis, con algunos metodos de latasa
     private:
-
-    public:
         string Nombre_Usuario, Numero_Tarjeta;
         float Fondos;
 
+    public:
+        Cuenta(string n, string num, float f){
+            Nombre_Usuario = n;
+            Numero_Tarjeta = num;
+            Fondos = f;
+
+        }
+        
         
          // En la clase Cuenta
 
