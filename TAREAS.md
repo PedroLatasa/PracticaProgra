@@ -23,7 +23,7 @@
 9. Realizar el informe.
 
 
-* Jaco:
+* Jaco:9
 * Pablo: 1
 * Luis:
 * Nacho:
