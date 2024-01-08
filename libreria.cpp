@@ -38,7 +38,7 @@ void interfaz()
             }
             else
             {
-                cout << "Error en el registro." << endl;
+                cout << "\nError en el registro." << endl;
             }
         }
         break;
@@ -64,11 +64,11 @@ int menuInicial()
         cout << "\t\t\t*********************\n";
         cout << "\t\t\t Bienvenido al banco\n";
         cout << "\t\t\t*********************\n";
-        cout << "\n\t1. Iniciar sesión\n";
+        cout << "\n\t1. Iniciar sesion\n";
         cout << "\t2. Crear cuenta bancaria\n";
         cout << "\t0. Salir\n";
 
-        cout << "\nSelecciona una opción: ";
+        cout << "\nSelecciona una opcion: ";
         cin >> opcion;
         if (opcion < 0 || opcion > 2)
         {
@@ -91,7 +91,7 @@ int menuPrincipal()
         cout << "\t5. Informacion de la cuenta\n";
         cout << "\t0. Cerrar sesión\n";
 
-        cout << "\nSelecciona una opción: ";
+        cout << "\nSelecciona una opcion: ";
         cin >> eleccion;
         if (eleccion < 0 || eleccion > 5)
         {
@@ -149,7 +149,7 @@ void cargaDatosClientes(vector<Cliente> &cliente, vector<Cuenta> &cuentas)
     string dni, apell1, apell2, nombre, pass;
     float saldo = 0;
     ifstream archivo;
-    archivo.open("datosClientes.txt");
+    archivo.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Escritorio\\PracticaProgra-3\\datosClientes.txt"); //datosClientes.txt
     if (archivo.is_open())
     {
         archivo >> numClientes;
@@ -168,7 +168,7 @@ void cargaDatosClientes(vector<Cliente> &cliente, vector<Cuenta> &cuentas)
             c.setNombre(nombre);
 
             ifstream archivo2;
-            archivo2.open("datosCuentas.txt");
+            archivo2.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Escritorio\\PracticaProgra-3\\datosCuentas.txt"); //datosCuentas.txt
             if (archivo2.is_open())
             {
                 archivo2 >> numCuentas;
@@ -226,7 +226,6 @@ int login(vector<Cliente> clientes)
 
     do
     {
-        system("clear");
         cout << "\n\t\t\tLOGIN DE USUARIO\n";
         cout << "\t\t\t-----------------\n";
         cout << "\n\tDNI: ";
@@ -316,6 +315,16 @@ string pedirContrasenna()
     } while (true);
 }
 
+
+
+long long generarNumeroTarjeta() {
+    // Generar un número aleatorio de 16 dígitos
+    long long numeroTarjeta = rand() % 9000000000000000 + 1000000000000000;
+    return numeroTarjeta;
+}
+
+
+
 bool registro(vector<Cliente> &clientes)
 {
     bool registrado = false;
@@ -327,29 +336,33 @@ bool registro(vector<Cliente> &clientes)
 
     // Verificar si el usuario ya existe
     if(buscarCliente(clientes, dni) == -1){
-        registrado = false;
+        cout << "Ingrese el nombre: ";
+        cin >> nombre;
+        cout << "Ingrese el primer apellido: ";
+        cin >> apell1;
+        cout << "Ingrese el segundo apellido: ";
+        cin >> apell2;
+        // Solicitar y almacenar la contraseña usando la función pedirContraseña
+        password = pedirContrasenna();
+        Cliente nuevoCliente = {dni, nombre, apell1, apell2, password};
+
+        // Agregar el nuevo cliente y crear una nueva cuenta
+        nuevoCliente.cuentas.push_back(Cuenta());                      // Crear una cuenta vacía asociada al nuevo cliente
+        nuevoCliente.cuentas.back().Nombre_Usuario = nuevoCliente.getDNI(); // Usar el nombre como nombre de usuario por ahora
+        nuevoCliente.cuentas.back().Numero_Tarjeta = generarNumeroTarjeta();                // Simplemente incrementar el número de tarjeta
+        nuevoCliente.cuentas.back().setFondos(0);                        // Nuevo usuario comienza con saldo cero                // Almacenar la contraseña en la cuenta
+
+        clientes.push_back(nuevoCliente); // Agregar el nuevo cliente al vector de clientes
+
+        registrado = true; // Se registra con éxito y se devuelve true
+        return registrado;
+    }
+    else{
+        cout << "Este DNI ya esta registrado.";
+        return false;
     }
 
-    cout << "Ingrese el nombre: ";
-    cin >> nombre;
-    cout << "Ingrese el primer apellido: ";
-    cin >> apell1;
-    cout << "Ingrese el segundo apellido: ";
-    cin >> apell2;
-    // Solicitar y almacenar la contraseña usando la función pedirContraseña
-    password = pedirContrasenna();
-    Cliente nuevoCliente = {dni, nombre, apell1, apell2, password};
-
-    // Agregar el nuevo cliente y crear una nueva cuenta
-    nuevoCliente.cuentas.push_back(Cuenta());                      // Crear una cuenta vacía asociada al nuevo cliente
-    nuevoCliente.cuentas.back().Nombre_Usuario = nuevoCliente.getDNI(); // Usar el nombre como nombre de usuario por ahora
-    nuevoCliente.cuentas.back().Numero_Tarjeta = 1;                // Simplemente incrementar el número de tarjeta
-    nuevoCliente.cuentas.back().setFondos(0);                        // Nuevo usuario comienza con saldo cero                // Almacenar la contraseña en la cuenta
-
-    clientes.push_back(nuevoCliente); // Agregar el nuevo cliente al vector de clientes
-
-    registrado = true; // Se registra con éxito y se devuelve true
-    return registrado;
+    
 }
 
 bool esDNIValido(const string& dni) {
@@ -388,7 +401,7 @@ void guardaDatos(vector<Cliente> clientes, vector<Cuenta> cuentas)
 { // Guarda los datos
     guardaCuentas(cuentas);
     ofstream archivo;
-    archivo.open("datosClientes.txt");
+    archivo.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Escritorio\\PracticaProgra-3\\datosClientes.txt"); //datosClientes.txt
     archivo << clientes.size() << endl;
     for (int i = 0; i < clientes.size(); i++)
     {
@@ -404,7 +417,7 @@ void guardaDatos(vector<Cliente> clientes, vector<Cuenta> cuentas)
 void guardaCuentas(vector<Cuenta> cuentas)
 {
     ofstream archivo;
-    archivo.open("datosCuentas.txt");
+    archivo.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Escritorio\\PracticaProgra-3\\datosCuentas.txt"); //datosCuentas.txt
     archivo << cuentas.size() << endl;
     for (int i = 0; i < cuentas.size(); i++)
     {
