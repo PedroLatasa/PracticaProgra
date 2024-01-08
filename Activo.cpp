@@ -39,19 +39,21 @@ class Prestamo : protected Activo{
         float promesa_de_pago;
     
     public:
-        float rentabilidad = get_rentabilidad_prestamo();
+        //float rentabilidad = get_rentabilidad_prestamo();
+        
         Prestamo(float i, float pp, float pi){
             tipo_interes = i;
             promesa_de_pago = pp;
             precio_inicial = pi;
         }
 
-        float get_rentabilidad_prestamo(){
-            (promesa_de_pago * (1 + tipo_interes)) - precio_inicial;
-        }
+        //float get_rentabilidad_prestamo(){
+        //    (promesa_de_pago * (1 + tipo_interes)) - precio_inicial;
+        //}
 
 };
 
+/*
 int main(){
     Bono b34(340,300,15);
     Prestamo p82(0.1,320,310);
@@ -60,3 +62,4 @@ int main(){
 
     return 0;
 }
+*/
