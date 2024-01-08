@@ -7,10 +7,8 @@ private:
 public:
     string Nombre_Usuario, Numero_Tarjeta; // nombre_usuario es realmente el dni del propietario (un nombre no podria ser pk)
 
-    // En la clase Cuenta
-
+    Cuenta() {}
     
-
     void hacer_Transferencia()
     {
         float cantidad = 0;
@@ -83,6 +81,4 @@ public:
     {
         Fondos = fondos;
     }
-
-    // Cuenta() {}
 };
