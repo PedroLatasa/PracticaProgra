@@ -9,12 +9,12 @@
 
 5. Atributos private, protected, etc. Revisar.
 
-6. ¡Herencia!
+6. ¡Herencia!(Hecho)
 
 7. Mejorar clase cuenta (hacer transferencia) 
 
 8. Incluir (mínimo 3 porque es obligatorio) de estas herramientas:
-   - Meter clases abstractas
+   - Meter clases abstractas (Hecho)
    - Meter aritmética de punteros
    - Meter sobrecarga de funciones u operadores
    - Meter gestión de excepciones
