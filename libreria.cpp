@@ -149,7 +149,7 @@ void cargaDatosClientes(vector<Cliente> &cliente, vector<Cuenta> &cuentas)
     string dni, apell1, apell2, nombre, pass;
     float saldo = 0;
     ifstream archivo;
-    archivo.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Escritorio\\PracticaProgra-3\\datosClientes.txt"); //datosClientes.txt
+    archivo.open("datosClientes.txt"); 
     if (archivo.is_open())
     {
         archivo >> numClientes;
@@ -168,7 +168,7 @@ void cargaDatosClientes(vector<Cliente> &cliente, vector<Cuenta> &cuentas)
             c.setNombre(nombre);
 
             ifstream archivo2;
-            archivo2.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Escritorio\\PracticaProgra-3\\datosCuentas.txt"); //datosCuentas.txt
+            archivo2.open("datosCuentas.txt"); 
             if (archivo2.is_open())
             {
                 archivo2 >> numCuentas;
@@ -401,7 +401,7 @@ void guardaDatos(vector<Cliente> clientes, vector<Cuenta> cuentas)
 { // Guarda los datos
     guardaCuentas(cuentas);
     ofstream archivo;
-    archivo.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Escritorio\\PracticaProgra-3\\datosClientes.txt"); //datosClientes.txt
+    archivo.open("datosClientes.txt"); //datosClientes.txt
     archivo << clientes.size() << endl;
     for (int i = 0; i < clientes.size(); i++)
     {
@@ -417,7 +417,7 @@ void guardaDatos(vector<Cliente> clientes, vector<Cuenta> cuentas)
 void guardaCuentas(vector<Cuenta> cuentas)
 {
     ofstream archivo;
-    archivo.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Escritorio\\PracticaProgra-3\\datosCuentas.txt"); //datosCuentas.txt
+    archivo.open("datosCuentas.txt"); //datosCuentas.txt
     archivo << cuentas.size() << endl;
     for (int i = 0; i < cuentas.size(); i++)
     {
