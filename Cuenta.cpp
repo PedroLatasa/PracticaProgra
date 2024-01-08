@@ -9,26 +9,7 @@ public:
 
     // En la clase Cuenta
 
-    /*bool validarTransferencia(const vector<Cuenta>& cuentas, const string& numCuentaDestinatario, float cantidad) const {
-        // Buscar al destinatario por el número de tarjeta
-        auto it = find_if(cuentas.begin(), cuentas.end(), [&numCuentaDestinatario](const Cuenta& cuenta) {
-            return cuenta.Numero_Tarjeta == numCuentaDestinatario;
-        });
-
-        // Comprobar si se encontró al destinatario
-        if (it == cuentas.end()) {
-            cout << "Número de cuenta del destinatario no válido.\n";
-            return false;
-        }
-
-        // Comprobar si el remitente tiene fondos suficientes
-        if (Fondos < cantidad) {
-            cout << "Fondos insuficientes para realizar la transferencia.\n";
-            return false;
-        }
-
-        return true;
-    }*/
+    
 
     void hacer_Transferencia()
     {
@@ -42,43 +23,48 @@ public:
         cout << "Ingrese la cantidad a transferir: ";
         cin >> cantidad;
 
-        /*// Realizar las comprobaciones y la transferencia
-        if (validarTransferencia(cuentas, num_Cuenta, cantidad)) {
-            Fondos -= cantidad; // Restar fondos al remitente
-
-            // Actualizar los fondos del destinatario
-            auto it = find_if(cuentas.begin(), cuentas.end(), [&num_Cuenta](const Cuenta& cuenta) {
-                return cuenta.Numero_Tarjeta == num_Cuenta;
-            });
-
-            if (it != cuentas.end()) {
-                it->Fondos += cantidad; // Sumar fondos al destinatario
-                cout << "Transferencia exitosa a la cuenta " << num_Cuenta << "\n";
-            } else {
-                cout << "Error al actualizar los fondos del destinatario.\n";
-            }
-        } else {
-            cout << "No se pudo realizar la transferencia.\n";
-        }*/
+        
     }
 
     void añadir_Fondos()
     {
         float cantidad = 0;
+        string respuesta; 
         cout << "Escriba la cantidad de fondos que desee anadir: " << endl;
         cin >> cantidad;
-        cantidad += getFondos();
-        setFondos(cantidad);
-        cout << "Se han anadido " << cantidad << " correctamente a su cuenta." << endl;
+        cout << "Hemos entendido que desea anadir " << cantidad << " fondos a su cuenta. \nEs esto correcto? (s para si; n para no): ";
+        cin >> respuesta; 
+        if (respuesta == "s"){
+            Fondos += cantidad;
+            cout << "Se han anadido " << cantidad << " correctamente a su cuenta." << endl;
+
+        }
+        else{
+            cout << "De acuerdo. No se ha realizado la operacion.";
+        }
+
+        
     }
 
     void retirar_Fondos()
     {
         float cantidad;
+        string respuesta;
         cout << "Escriba la cantidad de fondos que desee retirar: " << endl;
         cin >> cantidad;
-        Fondos -= cantidad;
-        cout << "Se han extraido " << cantidad << " correctamente de su cuenta." << endl;
+        cout << "Hemos entendido que desea retirar " << cantidad << " fondos a su cuenta. \nEs esto correcto? (s para si; n para no): ";
+        cin >> respuesta; 
+        if (respuesta == "s"){
+            
+            //meter posible try catch para comprobar que se realizar la retirada
+            //que la cantidad sea menor que los fondos
+
+            Fondos -= cantidad;
+            cout << "Se han extraido " << cantidad << " correctamente de su cuenta." << endl;
+        }
+        else{
+            cout << "De acuerdo. No se ha realizado la operacion.";
+        }
     }
 
     void getString()
