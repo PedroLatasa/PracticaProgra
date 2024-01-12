@@ -10,7 +10,7 @@ class Cliente {
         Cliente(){}
 
         Cliente (string d, string n, string a1, string a2, string c){
-            string dni = d;
+            dni = d;
             nombre = n;
             apellido1 = a1;
             apellido2 = a2;
