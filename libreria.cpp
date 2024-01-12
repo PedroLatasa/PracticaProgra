@@ -20,7 +20,7 @@ void interfaz()
                 cout << "Inicio de sesion exitoso." << endl;
                 do{
                     eleccion = menuPrincipal();
-                    operaciones(eleccion, clientes.at(posicionCliente));
+                    operaciones(eleccion, clientes.at(posicionCliente), clientes);
                 }while(eleccion != 0);    
             }
             else
@@ -103,9 +103,14 @@ int menuPrincipal()
     return eleccion;
 }
 
-int operaciones(int eleccion, Cliente &c)
+int operaciones(int eleccion, Cliente &c, vector <Cliente> clientes)
 {
-    Cuenta cta = c.cuentas.at(0); // si solo tiene una cuenta, no tendra que elegir (se coge directamente esa, es decir, la 0)
+    if (c.cuentas.empty()) {
+        cout << "El cliente no tiene cuentas." << endl;
+        return 0;
+    }
+
+    Cuenta &cta = c.cuentas.at(0); // si solo tiene una cuenta, no tendra que elegir (se coge directamente esa, es decir, la 0)
     if (c.cuentas.size() > 1 && eleccion != 0) cta = c.cuentas.at(eligeCuenta(c)); // eleccion del usuario sobre que cuenta quiere operar
 
     switch (eleccion)
@@ -116,11 +121,10 @@ int operaciones(int eleccion, Cliente &c)
 
     case 2:
         cta.retirar_Fondos();
-        cta.setFondos(100);
         break;
 
     case 3:
-        cta.hacer_Transferencia(); // not finished :v
+        //cta.hacer_Transferencia(clientes);
         break;
 
     case 4:
@@ -151,7 +155,7 @@ void cargaDatosClientes(vector<Cliente> &cliente, vector<Cuenta> &cuentas)
     string dni, apell1, apell2, nombre, pass;
     float saldo = 0;
     ifstream archivo;
-    archivo.open("datosClientes.txt"); //para windows copiar el path
+    archivo.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Documentos\\PracticaProgra-2\\datosClientes.txt"); //para windows copiar el path
     if (archivo.is_open())
     {
         archivo >> numClientes;
@@ -170,7 +174,7 @@ void cargaDatosClientes(vector<Cliente> &cliente, vector<Cuenta> &cuentas)
             c.setNombre(nombre);
 
             ifstream archivo2;
-            archivo2.open("datosCuentas.txt"); //para windows copiar el path
+            archivo2.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Documentos\\PracticaProgra-2\\datosCuentas.txt"); //para windows copiar el path
             if (archivo2.is_open())
             {
                 archivo2 >> numCuentas;
@@ -209,7 +213,7 @@ int buscarCliente(vector<Cliente> clientes, string dni)
         if (clientes.at(i).getDNI() == dni)
         {
             pos = i;
-            i = clientes.size();
+            break;
         }
     }
 
@@ -238,7 +242,7 @@ int login(vector<Cliente> clientes)
             isIn = true;
         }
 
-        if (!isIn)
+        else if (!isIn)
         {
             cout << "\tError en el DNI o la contrasena. Intente de nuevo." << endl;
             contador++;
@@ -316,10 +320,16 @@ string pedirContrasenna()
 
 
 
-long long generarNumeroTarjeta() {
-    // Generar un número aleatorio de 16 dígitos
-    long long numeroTarjeta = rand() % 9000000000000000 + 1000000000000000;
-    return numeroTarjeta;
+string generarNumeroTarjeta() {
+    
+    string acumular;
+    
+    for (int i = 1; i <= 4; i++) {
+        string cadena = to_string(rand() % 9000 + 1000);
+        acumular += cadena;
+    }
+
+    return acumular;
 }
 
 
@@ -341,7 +351,6 @@ bool registro(vector<Cliente> &clientes)
         cin >> apell1;
         cout << "Ingrese el segundo apellido: ";
         cin >> apell2;
-        // Solicitar y almacenar la contraseña usando la función pedirContraseña
         password = pedirContrasenna();
         Cliente nuevoCliente = {dni, nombre, apell1, apell2, password};
 
@@ -382,11 +391,11 @@ bool esDNIValido(const string& dni) {
     return true;
 }
 
-int eligeCuenta(Cliente c)
+int eligeCuenta(Cliente &c)
 {
     int eleccion;
     cout << "\n Elige sobre que cuenta operar: ";
-    for (int i = 0; i < c.cuentas.size(); i++)
+    for (int i = 0; i <= c.cuentas.size(); i++)
     {
         cout << i << "- " << c.cuentas.at(i).Numero_Tarjeta << endl;
     }
@@ -400,7 +409,7 @@ void guardaDatos(vector<Cliente> clientes, vector<Cuenta> cuentas)
 { // Guarda los datos
     guardaCuentas(cuentas);
     ofstream archivo;
-    archivo.open("datosClientes.txt"); //para windows copiar el path
+    archivo.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Documentos\\PracticaProgra-2\\datosClientes.txt"); //para windows copiar el path
     archivo << clientes.size() << endl;
     for (int i = 0; i < clientes.size(); i++)
     {
@@ -416,7 +425,7 @@ void guardaDatos(vector<Cliente> clientes, vector<Cuenta> cuentas)
 void guardaCuentas(vector<Cuenta> cuentas)
 {
     ofstream archivo;
-    archivo.open("datosCuentas.txt"); //para windows copiar el path
+    archivo.open("C:\\Users\\Admin\\OneDrive - CUNEF\\Documentos\\PracticaProgra-2\\datosCuentas.txt"); //para windows copiar el path
     archivo << cuentas.size() << endl;
     for (int i = 0; i < cuentas.size(); i++)
     {
