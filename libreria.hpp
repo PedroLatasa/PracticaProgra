@@ -6,6 +6,7 @@
 #include <fstream>
 #include <cctype> // para las funciones de char, pero es necesario?
 #include <random>
+#include <ctime>
 //#include <cstdlib>
 using namespace std;
 #include "Activo.cpp"
