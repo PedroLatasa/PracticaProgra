@@ -25,7 +25,7 @@ void interfaz()
                     Cuenta &cta = clientes.at(posicionCliente).cuentas.at(0); // si solo tiene una cuenta, no tendra que elegir (se coge directamente esa, es decir, la 0)
                     if (clientes.at(posicionCliente).cuentas.size() > 1 && eleccion != 0)
                     {
-                        cta = clientes.at(posicionCliente).cuentas.at(eligeCuenta(clientes.at(posicionCliente))); // eleccion del usuario sobre que cuenta quiere operar
+                        cta = clientes.at(posicionCliente).cuentas.at(eligeCuenta(clientes.at(posicionCliente))); // eleccion del usuario sobre que cuenta quiere operar <--OJO: mirar sobrecarga defunciones
                     }
                     operaciones(eleccion, cta);
                     guardaDatos(clientes, numCuentas);
