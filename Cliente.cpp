@@ -62,6 +62,15 @@ class Cliente {
             contrasenna = pass;
         }
 
+        void toString(){
+            cout << "DNI: " << dni << endl;
+            cout << "Nombre: " << nombre << endl;
+            cout << "Apellido1: " << apellido1 << endl;
+            cout << "Apelllido2: " << apellido2 << endl;
+            cout << "Contrasenna: " << contrasenna << endl;
+
+        }
+
 };
 
 class Cliente_Inversor : private Cliente{
