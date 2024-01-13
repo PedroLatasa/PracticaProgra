@@ -25,7 +25,7 @@ void interfaz()
                     Cuenta &cta = clientes.at(posicionCliente).cuentas.at(0); // si solo tiene una cuenta, no tendra que elegir (se coge directamente esa, es decir, la 0)
                     if (clientes.at(posicionCliente).cuentas.size() > 1 && eleccion != 0)
                     {
-                        cta = clientes.at(posicionCliente).cuentas.at(eligeCuenta(clientes.at(posicionCliente))); // eleccion del usuario sobre que cuenta quiere operar <--OJO: mirar sobrecarga defunciones
+                        cta = clientes.at(posicionCliente).cuentas.at(eligeCuenta(clientes.at(posicionCliente))); // eleccion del usuario sobre que cuenta quiere operar
                     }
                     operaciones(eleccion, cta);
                     guardaDatos(clientes, numCuentas);
@@ -400,7 +400,7 @@ bool esDNIValido(const string &dni)
 int eligeCuenta(Cliente c)
 {
     int eleccion;
-    cout << "\n Elige sobre que cuenta operar: ";
+    cout << "\n Elige sobre que cuenta operar: " << endl;
     for (int i = 0; i < c.cuentas.size(); i++)
     {
         cout << i << "- " << c.cuentas.at(i).Numero_Tarjeta << endl;
