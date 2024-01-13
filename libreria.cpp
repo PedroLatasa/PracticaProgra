@@ -19,15 +19,20 @@ void interfaz()
             { // sera "if(login())", pero hasta que este realizado el metodo en cuestion lo tomamos como true | o esta bien ya asi??
                 int eleccion;
                 cout << "Inicio de sesion exitoso." << endl;
+                Cliente &actual = clientes.at(posicionCliente);
                 do
                 {
                     eleccion = menuPrincipal();
-                    Cuenta &cta = clientes.at(posicionCliente).cuentas.at(0); // si solo tiene una cuenta, no tendra que elegir (se coge directamente esa, es decir, la 0)
-                    if (clientes.at(posicionCliente).cuentas.size() > 1 && eleccion != 0)
+                    if (actual.cuentas.size() > 1 && eleccion != 0)
                     {
-                        cta = clientes.at(posicionCliente).cuentas.at(eligeCuenta(clientes.at(posicionCliente))); // eleccion del usuario sobre que cuenta quiere operar
+                        
+                        Cuenta &cta = actual.cuentas.at(eligeCuenta(actual)); // eleccion del usuario sobre que cuenta quiere operar
+                        operaciones(eleccion, cta, actual);
                     }
-                    operaciones(eleccion, cta);
+                    else{
+                        Cuenta &cta = actual.cuentas.at(0);
+                        operaciones(eleccion, cta, actual);
+                    } ;
                     guardaDatos(clientes, numCuentas);
                 } while (eleccion != 0);
             }
@@ -101,19 +106,215 @@ int menuPrincipal()
         cout << "\t3. Realizar transferencia\n";
         cout << "\t4. Inversiones\n";
         cout << "\t5. Informacion de la cuenta\n";
+        cout << "\t6. Cambiar informacion de la cuenta\n";
         cout << "\t0. Cerrar sesion\n";
+
+        cout << "\nSelecciona una opcion: ";
+        cin >> eleccion;
+        if (eleccion < 0 || eleccion > 6)
+        {
+            cout << "Opción invalida" << endl;
+        }
+    } while (eleccion < 0 || eleccion > 6);
+    return eleccion;
+}
+
+int menuInformacion()
+{
+   int eleccion;
+    do
+    {
+        cout << "\n\t*************************\n";
+        cout << "\n\t1. Cambiar datos de usuario.\n";
+        cout << "\t2. Cambiar contrasenna.\n";
+        cout << "\t3. Annadir/Eliminar cuenta.\n";
+        cout << "\t4. Volver atras.\n";
+
+
+        cout << "\nSelecciona una opcion: ";
+        cin >> eleccion;
+        if (eleccion < 0 || eleccion > 4)
+        {
+            cout << "Opción invalida" << endl;
+        }
+    } while (eleccion < 0 || eleccion > 4);
+    return eleccion;
+}
+
+int menuCambiarDatos()
+{
+   int eleccion;
+    do
+    {
+        cout << "\n\t*************************\n";
+        cout << "\n\t1. Cambiar DNI.\n";
+        cout << "\t2. Cambiar nombre.\n";
+        cout << "\t3. Cambiar el primer apellido.\n";
+        cout << "\t4. Cambiar el segundo apellido.\n";
+        cout << "\t5. Volver atras.\n";
+
 
         cout << "\nSelecciona una opcion: ";
         cin >> eleccion;
         if (eleccion < 0 || eleccion > 5)
         {
-            cout << "Opción inválida" << endl;
+            cout << "Opción invalida" << endl;
         }
     } while (eleccion < 0 || eleccion > 5);
     return eleccion;
 }
 
-void operaciones(int eleccion, Cuenta& cta)
+void cambiarDatos(int opcion, Cliente& c){
+
+    string DNI;
+    string nombre;
+    string apellido1; 
+    string apellido2;
+
+    switch (opcion)
+                {
+                case 1:
+                    
+                    cout << "Ingrese su nuevo DNI: ";
+                    cin >> DNI;
+
+                    if(esDNIValido(DNI)){
+
+                        c.setDNI(DNI);
+                        cout << "El DNI ha sido correctamente actualizado.";
+                    } 
+                    else{
+                        cout << "El DNI introducido no es valido.";
+                    } 
+
+                    break;
+                case 2: 
+                    
+                    cout << "Ingrese su nuevo nombre: ";
+                    cin >> nombre;
+                    c.setNombre(nombre);
+                    cout << "El nombre ha sido correctamente actualizado.";
+                    break;
+                
+                case 3:
+                    
+                    cout << "Ingrese su nuevo primer apellido: ";
+                    cin >> apellido1;
+                    c.setApell1(apellido1);
+                    cout << "Su primer apellido ha sido correctamente actualizado.";
+                    break;
+
+                case 4:
+                    
+                    cout << "Ingrese su nuevo segundo apellido: ";
+                    cin >> apellido2;
+                    c.setApell2(apellido2);
+                    cout << "Su segundo apellido ha sido correctamente actualizado.";
+                    break;
+
+                case 5:
+                    break;
+
+                
+                default:
+                    cout << "Opcion no valida. Por favor, seleccione una opción valida." << endl;
+                    break;
+                }
+
+
+
+}
+
+
+void cambiarInfo(int opcion, Cliente& c)
+{
+    switch (opcion)
+        {
+        case 1:
+            {
+
+            int resultado = menuCambiarDatos();
+            cambiarDatos(resultado, c);
+            }
+            break;
+            
+        case 2:
+            {
+            string respuesta;
+            cout << "Su contrasenna actual es: " << c.getPass() << endl;
+            cout << "Dese cambiarla? s:para si; n:para no: ";
+            cin >> respuesta;
+            if (respuesta == "s"){
+                c.setPass(pedirContrasenna());
+                cout << "Se ha cambiado su contrasenna.";
+            }
+            }
+            
+            break;
+        case 3:
+        {
+            int respuesta2;
+            int respuesta3; 
+            string num_cuenta;
+            cout << "Ahora mismo tiene las siguientes cuentas a su nombre: " << endl; 
+            for (int i = 0; i < int(c.cuentas.size()); i++){
+                cout << i + 1 << ". " << c.cuentas.at(i).Numero_Tarjeta << endl;
+            }
+            cout << "Desea annadir o eliminar alguna cuenta?" << endl;
+            cout << "1: annadir ; 2: eliminar: ";
+            cin >> respuesta2;
+            if (respuesta2 == 1){
+                c.cuentas.push_back(Cuenta());                            // Crear una cuenta vacía asociada al nuevo cliente
+                c.cuentas.back().Nombre_Usuario = c.getDNI();  // Usar el nombre como nombre de usuario por ahora
+                num_cuenta = generarNumeroTarjeta();
+                c.cuentas.back().Numero_Tarjeta = num_cuenta; // Simplemente incrementar el número de tarjeta
+                c.cuentas.back().setFondos(0);
+                cout << "Su cuenta ha sido annadida con numero: " << num_cuenta << endl;
+                    }
+            else if (respuesta2 == 2){
+                cout << "Ahora mismo dispone de las siguientes cuentas: " << endl;
+                for(int i = 0; i < int(c.cuentas.size()); i++){
+                    cout << i + 1 << ". " << c.cuentas.at(i).Numero_Tarjeta << endl;
+                }
+                if(c.cuentas.size()>1){
+                    cout << "Desea la cuenta que desea eliminar marcando su numero(1,2,3..): "; 
+                    cin >> respuesta3;
+                    respuesta3--;
+
+                    for(int i = 0; i < int(c.cuentas.size()); i++){
+                        if (respuesta3 == i){
+                            c.cuentas.erase(c.cuentas.begin() + i);
+                            break;
+                        }
+                    }
+                    cout << "Su cuenta ha sido eliminada." << endl;
+                }
+
+                else{
+                    cout << "Lo siento pero solo dispone de una cuenta." << endl;
+                    cout << "No puede eliminar su unica cuenta. " << endl;
+                }
+                
+            }
+            else{
+                cout << "Respuesta invalida.";
+            }
+            
+            
+        }
+            break;
+            
+        case 4:
+            break;
+        
+        default:
+            cout << "Opcion no valida. Por favor, seleccione una opcion valida." << endl;
+            break;
+        }
+
+}
+
+void operaciones(int eleccion, Cuenta& cta, Cliente& c)
 {
     switch (eleccion)
     {
@@ -137,11 +338,17 @@ void operaciones(int eleccion, Cuenta& cta)
         cta.getString();
         break;
 
-    case 0:
+    case 6:
     {
-        cout << "Sesion cerrada. Hasta luego!" << endl << endl;
+        int opcion = menuInformacion();
+        cambiarInfo(opcion, c);
     }
     break;
+        
+    case 0:
+    
+        cout << "Sesion cerrada. Hasta luego!" << endl << endl;
+        break;
 
     default:
         cout << "Opcion no valida. Por favor, seleccione una opción valida." << endl;
@@ -211,7 +418,7 @@ int cargaDatosClientes(vector<Cliente> &cliente)
 int buscarCliente(vector<Cliente> clientes, string dni)
 {
     int pos = -1; // en caso de no encontrar un cliente con dicho dni devuelve -1
-    for (int i = 0; i < clientes.size(); i++)
+    for (int i = 0; i < int(clientes.size()); i++)
     {
         if (clientes.at(i).getDNI() == dni)
         {
@@ -335,6 +542,7 @@ string generarNumeroTarjeta()
     return acumular;
 }
 
+
 bool registro(vector<Cliente> &clientes)
 {
     bool registrado = false;
@@ -401,14 +609,14 @@ int eligeCuenta(Cliente c)
 {
     int eleccion;
     cout << "\n Elige sobre que cuenta operar: " << endl;
-    for (int i = 0; i < c.cuentas.size(); i++)
+    for (int i = 0; i < int(c.cuentas.size()); i++)
     {
-        cout << i << "- " << c.cuentas.at(i).Numero_Tarjeta << endl;
+        cout << i + 1  << "- " << c.cuentas.at(i).Numero_Tarjeta << endl;
     }
     cout << "Elige: ";
     cin >> eleccion;
 
-    return eleccion;
+    return eleccion - 1;
 }
 
 void guardaDatos(vector<Cliente> clientes, int numCuentas)
@@ -419,14 +627,14 @@ void guardaDatos(vector<Cliente> clientes, int numCuentas)
     archivo << clientes.size() << endl;
     archivo2.open("datosCuentas.txt");
     archivo2 << numCuentas << endl;
-    for (int i = 0; i < clientes.size(); i++)
+    for (int i = 0; i < int(clientes.size()); i++)
     {
         archivo << clientes.at(i).getDNI();
         archivo << " " << clientes.at(i).getApell1();
         archivo << " " << clientes.at(i).getApell2();
         archivo << " " << clientes.at(i).getNombre();
         archivo << " " << clientes.at(i).getPass() << endl;
-        for (int j = 0; j < clientes.at(i).cuentas.size(); j++)
+        for (int j = 0; j < int(clientes.at(i).cuentas.size()); j++)
         {
             archivo2 << clientes.at(i).cuentas.at(j).Numero_Tarjeta;
             archivo2 << " " << clientes.at(i).cuentas.at(j).Nombre_Usuario;
