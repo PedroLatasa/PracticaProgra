@@ -69,9 +69,9 @@ public:
         Cuenta elegida;
         if (num.length() == 16)
         {
-            for (int i = 0; i <= clientes.size(); i++)
+            for (int i = 0; i < int(clientes.size()); i++)
             {
-                for (int j = 0; j <= clientes.at(i).cuentas.size(); j++)
+                for (int j = 0; j <= int(clientes.at(i).cuentas.size()); j++)
                 {
                     if (clientes.at(i).cuentas.at(j).Numero_Tarjeta == num)
                     {
@@ -107,7 +107,7 @@ public:
         auto resultado = cuentaCorrecta(clientes, num_Cuenta);
 
         estado = resultado.first;
-        Cuenta &elegida = resultado.second;
+        //Cuenta &elegida = resultado.second;
 
         if (estado)
         {
@@ -172,6 +172,8 @@ public:
             cout << "De acuerdo. No se ha realizado la operacion." << endl;
         }
     }
+
+    
 
     void getString()
     {
