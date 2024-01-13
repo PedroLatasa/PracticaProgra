@@ -16,8 +16,12 @@ using namespace std;
 void interfaz();
 int cargaDatosClientes(vector<Cliente> &cliente);                                         // realizada por pablo                                             // realizada por pablo
 int menuInicial();                                                                         // realizada por jacobo
-int menuPrincipal();                                                                       // realizada por jacobo
-void operaciones(int eleccion, Cuenta& cta);
+int menuPrincipal();   
+int menuInformacion();   
+int menuCambiarDatos();     
+void cambiarDatos(int opcion, Cliente& c);                                                            // realizada por jacobo
+void cambiarInfo(int opcion, Cliente& c);
+void operaciones(int eleccion,Cuenta& cta, Cliente& c);
 int buscarCliente(vector<Cliente> clientes, string dni);
 int login(const vector<Cliente> clientes);    // realizada por pablo y pedro
 bool registro(vector<Cliente> &clientes);                         // realizada por pedro
