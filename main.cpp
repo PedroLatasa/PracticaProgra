@@ -9,7 +9,7 @@
 
 #include "libreria.hpp"
 
-int main() // realizada por nacho basically
+int main()
 {
     interfaz();
     return 0;
