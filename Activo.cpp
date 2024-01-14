@@ -5,7 +5,7 @@ class Activo{
         virtual float rentabilidad() = 0;
 };
 
-class Bono : protected Activo{
+class Bono : public Activo{
     protected:
         float pagos, precio_inicial, precio_actual;
         
@@ -22,7 +22,7 @@ class Bono : protected Activo{
 
 };
 
-class Prestamo : protected Activo{
+class Prestamo : public Activo{
     protected:
         float tipo_interes, promesa_de_pago, desembolso_inicial;
     
@@ -38,16 +38,3 @@ class Prestamo : protected Activo{
         }
 
 };
-
-/*
-int main(){
-    Bono b34(340,300,15);
-    Prestamo p82(0.1,320,310);
-
-    
-    
-    cout << "La rentabilidad del bono es de: " << b34.rentabilidad() << endl;
-
-    return 0;
-}
-*/
