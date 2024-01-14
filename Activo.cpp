@@ -1,6 +1,6 @@
 #include "libreria.hpp"
 
-class Activo{
+class Activo{ //realizada por luis
     public:
         virtual float rentabilidad() = 0;
 };
