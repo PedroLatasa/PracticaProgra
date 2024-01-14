@@ -1,9 +1,9 @@
 #include "libreria.hpp"
 
-vector<Cliente> clientes;
 
 void interfaz()
 {
+    vector<Cliente> clientes;
     srand(time(NULL)); // planta semilla para calcular randoms
     int numCuentas = cargaDatosClientes(clientes);
     int opcion;
@@ -223,7 +223,7 @@ void cambiarDatos(int opcion, Cliente &c)
     }
 }
 
-int darseDeBaja(Cliente &c, int numCuentas)
+int darseDeBaja(Cliente &c, vector<Cliente> &clientes, int numCuentas)
 {
     string respuesta;
     cout << "\nHola " << c.getNombre() << ". Veo que quiere darse de baja." << endl;
@@ -290,7 +290,8 @@ int cambiarInfo(int opcion, Cliente &c, int numCuentas)
     break;
     case 3:
     {
-        int respuesta2, respuesta3, respuesta4;
+        int respuesta2, respuesta3;
+        //int respuesta4;
         string num_cuenta;
         cout << "Ahora mismo tiene las siguientes cuentas a su nombre: " << endl;
         for (int i = 0; i < int(c.cuentas.size()); i++)
@@ -489,7 +490,7 @@ int operaciones(int eleccion, vector<Cliente> &clientes, Cuenta &cta, Cliente &c
 
     case 7:
     {
-        n = darseDeBaja(c, numCuentas);
+        n = darseDeBaja(c, clientes, numCuentas);
         guardaDatos(clientes, n);
         cout << "Sesion cerrada. Hasta luego!" << endl
              << endl;
