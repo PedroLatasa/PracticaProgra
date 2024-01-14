@@ -3,24 +3,24 @@
 void interfaz()
 {
     srand(time(NULL)); // planta semilla para calcular randoms
-    vector<Cliente> clientes;
+    vector<Cliente> clientes; // vector que contiene todos los usuarios del banco (cada uno tendra su propio vector de cuentas individual para evitar errores posibles)
     int numCuentas = cargaDatosClientes(clientes);
     int opcion;
     do
     {
-        try
+        try // atrapa la excepcion del menuInicial, ponemos aqui una excepcion ya que al aun no estar muy avanzado dentro del programa no se corte a mitad de alguna operacion 
         {
             opcion = menuInicial();
             switch (opcion)
             {
-            case 1:
+            case 1: // (iniciar sesion)
             {
-                int posicionCliente = login(clientes);
-                if (posicionCliente != -1)
-                { // sera "if(login())", pero hasta que este realizado el metodo en cuestion lo tomamos como true | o esta bien ya asi??
+                int posicionCliente = login(clientes); 
+                if (posicionCliente != -1) // comprobacion de si se ha podido encontrar el cliente
+                { 
                     int eleccion, aux;
                     cout << "\nInicio de sesion exitoso." << endl;
-                    Cliente &actual = clientes.at(posicionCliente);
+                    Cliente &actual = clientes.at(posicionCliente); // cliente concreto que ha iniciado sesion
                     do
                     {
                         eleccion = menuPrincipal();
@@ -40,7 +40,7 @@ void interfaz()
                         {
                             guardaDatos(clientes, numCuentas);
                         }
-                    } while (eleccion != 0 && eleccion != 7);
+                    } while (eleccion != 0 && eleccion != 7); // se repetiran las opciones de realizar operaciones siempre que no eliga salir o borrar su cuenta
                 }
                 else
                 {
@@ -49,14 +49,13 @@ void interfaz()
             }
             break;
 
-            case 2:
+            case 2: // (registrar nuevo usuario)
             {
                 if (registro(clientes))
                 {
-                    numCuentas++;
+                    numCuentas++; // habra una nueva cuenta ahora...
                     guardaDatos(clientes, numCuentas);
                     cout << "Registro exitoso. Ahora puede iniciar sesion.\n\n";
-                    // numCuentas = cargaDatosClientes(clientes); // al crear un nuevo usuario tambien se genera una nueva cuenta, por lo que querremos releer la BBDD
                 }
                 else
                 {
@@ -65,7 +64,7 @@ void interfaz()
             }
             break;
 
-            case 0:
+            case 0: // (salir)
                 cout << "Gracias por usar nuestro servicio. Hasta luego!\n\n";
                 break;
             }
@@ -79,7 +78,7 @@ void interfaz()
     } while (opcion != 0);
 }
 
-int menuInicial()
+int menuInicial() // (primer menu que se muestra)
 {
     int opcion;
 
@@ -116,7 +115,7 @@ int menuInicial()
     return opcion;
 }
 
-int menuPrincipal()
+int menuPrincipal() // (menu que se muestra al inciar sesion con exito)
 {
     int eleccion;
     do
@@ -141,7 +140,7 @@ int menuPrincipal()
     return eleccion;
 }
 
-int menuInformacion()
+int menuInformacion() // (menu de cambio de informacion de perfil)
 {
     int eleccion;
     do
@@ -190,7 +189,6 @@ void cambiarDatos(int opcion, Cliente &c)
     string DNI, nombre, apellido1, apellido2;
     switch (opcion)
     {
-
     case 1:
         cout << "Ingrese su nuevo nombre: ";
         cin >> nombre;
@@ -206,7 +204,6 @@ void cambiarDatos(int opcion, Cliente &c)
         break;
 
     case 3:
-
         cout << "Ingrese su nuevo segundo apellido: ";
         cin >> apellido2;
         c.setApell2(apellido2);
@@ -222,7 +219,7 @@ void cambiarDatos(int opcion, Cliente &c)
     }
 }
 
-int darseDeBaja(Cliente &c, vector<Cliente> &clientes, int numCuentas)
+int darseDeBaja(Cliente &c, vector<Cliente> &clientes, int numCuentas) // metodo que da de baja un cliente y todas sus cuentas
 {
     cout << "\nHola " << c.getNombre() << ". Sentimos que hayas decidido darte de baja, aunque siempre puedes volver cuando lo desees."
          << endl
@@ -277,9 +274,9 @@ int cambiarInfo(int opcion, Cliente &c, int numCuentas)
             cout << "Se ha cambiado su contrasenna.";
         }
     }
-
     break;
-    case 3:
+        
+    case 3: // (añadir o eliminar cuentas)
     {
         int respuesta2, respuesta3;
         // int respuesta4;
@@ -380,7 +377,7 @@ int cambiarInfo(int opcion, Cliente &c, int numCuentas)
     return numCuentas;
 }
 
-bool buscarCuenta(vector<Cliente> &clientes, string num)
+bool buscarCuenta(vector<Cliente> &clientes, string num) // dado un dni, busca al cliente con dicho dni dentro del vector de clientes
 {
     bool correctoNum = false;
     for (int i = 0; i < int(clientes.size()); i++)
@@ -413,7 +410,7 @@ void annadirFondos(vector<Cliente> &clientes, string num, float fondos)
     }
 }
 
-void realizarTransferencia(vector<Cliente> &clientes, Cuenta &cta)
+void realizarTransferencia(vector<Cliente> &clientes, Cuenta &cta) // metodo para transferir fondos de una cuenta a otra, dado el num de cuenta a la que transferirlos
 {
     string numDestinatario;
     float fondos;
@@ -428,15 +425,17 @@ void realizarTransferencia(vector<Cliente> &clientes, Cuenta &cta)
         {
             cout << "Ingrese la cantidad de fondos que desea transferir :";
             cin >> fondos;
-            if (cta.fondos_suficientes(fondos))
+            if (cta.fondos_suficientes(fondos)) 
             {
                 cout << "De acuerdo, traspasamos " << fondos << " a la cuenta " << numDestinatario << endl;
-                cta.setFondos(float(cta.getFondos() - fondos));
-                annadirFondos(clientes, numDestinatario, fondos);
+                cta.setFondos(float(cta.getFondos() - fondos)); // quitamos los fondos de la cuenta que transfiere
+                annadirFondos(clientes, numDestinatario, fondos); // añadimos los mismos fondos a la cuenta a la que se transfiere
                 cout << "Se han annadido correctamente " << fondos << " a la cuenta: " << numDestinatario;
             }
             else
+            {
                 cout << "Fondos insuficientes." << endl;
+            }
         }
 
         else
@@ -446,7 +445,7 @@ void realizarTransferencia(vector<Cliente> &clientes, Cuenta &cta)
     } while (!estado);
 }
 
-int operaciones(int eleccion, vector<Cliente> &clientes, Cuenta &cta, Cliente &c, int numCuentas)
+int operaciones(int eleccion, vector<Cliente> &clientes, Cuenta &cta, Cliente &c, int numCuentas) // metodo que realiza las operaciones generales del programa
 {
     int n = numCuentas;
     switch (eleccion)
@@ -489,7 +488,6 @@ int operaciones(int eleccion, vector<Cliente> &clientes, Cuenta &cta, Cliente &c
     break;
 
     case 0:
-
         cout << "Sesion cerrada. Hasta luego!" << endl
              << endl;
         break;
@@ -502,7 +500,7 @@ int operaciones(int eleccion, vector<Cliente> &clientes, Cuenta &cta, Cliente &c
     return n;
 }
 
-int cargaDatosClientes(vector<Cliente> &cliente)
+int cargaDatosClientes(vector<Cliente> &cliente) // metodo que lee los archivos txt de la BBDD y los almacena en los vectores correspondientes
 {
     int numClientes = 0, numCuentas = 0;
     string dni, apell1, apell2, nombre, pass, num;
@@ -573,7 +571,7 @@ int buscarCliente(vector<Cliente> clientes, string dni)
     return pos;
 }
 
-int login(vector<Cliente> clientes)
+int login(vector<Cliente> clientes) // gestiona el inicio de sesion del cliente
 {
     string dni, password;
     int contador = 0;
@@ -612,7 +610,7 @@ int login(vector<Cliente> clientes)
     return posicion;
 }
 
-bool cumpleRequisitos(const string password)
+bool cumpleRequisitos(const string password) // metodo que determina si una contraseña es o no segura
 {
     bool tieneMayuscula = false;
     bool tieneMinuscula = false;
@@ -672,9 +670,8 @@ string pedirContrasenna()
     } while (true);
 }
 
-string generarNumeroTarjeta()
+string generarNumeroTarjeta() // metodo que genera un numero aleatorio de cuenta para evitar que se repitan a crear varias
 {
-
     string acumular;
 
     for (int i = 1; i <= 4; i++)
@@ -686,7 +683,7 @@ string generarNumeroTarjeta()
     return acumular;
 }
 
-bool registro(vector<Cliente> &clientes)
+bool registro(vector<Cliente> &clientes) 
 {
     bool registrado = false;
     string dni, apell1, apell2, nombre, password;
@@ -724,7 +721,7 @@ bool registro(vector<Cliente> &clientes)
     }
 }
 
-bool esDniValido(const string &dni)
+bool esDniValido(const string &dni) // metodo que determina si un dni es o no valido
 {
     if (dni.length() != 9)
     {
@@ -751,17 +748,17 @@ int eligeCuenta(Cliente c)
 {
     int eleccion;
     cout << "\n Elige sobre que cuenta operar: " << endl;
-    for (int i = 0; i < int(c.cuentas.size()); i++)
+    for (int i = 0; i < int(c.cuentas.size()); i++) // en caso de tener mas de una cuenta un mismo cliente:
     {
         cout << i + 1 << "- " << c.cuentas.at(i).getNumTarjeta() << endl;
     }
     cout << "Elige: ";
-    cin >> eleccion;
+    cin >> eleccion; // elegira una de las cuentas sobre la que operara despues
 
     return eleccion - 1;
 }
 
-void guardaDatos(vector<Cliente> clientes, int numCuentas)
+void guardaDatos(vector<Cliente> clientes, int numCuentas) // guarda (o reescribe) la BBDD 
 { // Guarda los datos
     ofstream archivo, archivo2;
     archivo.open("datosClientes.txt"); // para windows copiar el path
@@ -775,6 +772,7 @@ void guardaDatos(vector<Cliente> clientes, int numCuentas)
         archivo << " " << clientes.at(i).getApell2();
         archivo << " " << clientes.at(i).getNombre();
         archivo << " " << clientes.at(i).getPass() << endl;
+        
         for (int j = 0; j < int(clientes.at(i).cuentas.size()); j++)
         {
             archivo2 << clientes.at(i).cuentas.at(j).getNumTarjeta();
@@ -783,4 +781,5 @@ void guardaDatos(vector<Cliente> clientes, int numCuentas)
         }
     }
     archivo.close();
+    archivo2.close();
 }
