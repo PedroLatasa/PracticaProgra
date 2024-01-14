@@ -2,8 +2,8 @@
 
 void interfaz()
 {
-    vector<Cliente> clientes;
     srand(time(NULL)); // planta semilla para calcular randoms
+    vector<Cliente> clientes;
     int numCuentas = cargaDatosClientes(clientes);
     int opcion;
     do
