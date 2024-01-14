@@ -1,9 +1,12 @@
 /*
+    Nombre del proyecto:  CASH HUB BANK 
+
     Realizado por: Luis Javier Romero(luis), Jacobo Chaves(jacobo), 
     Pedro Latasa(latasa), Ignacio Ochoa(nacho) y Pablo Ruiz(pablo)
     
-    Primera aproximacion practica grupal Proyectos de programacion
-    08/11/2023  
+    Practica grupal Proyectos de Programación
+    Fecha: 14/01/2024
+
 */
 
 #include "libreria.hpp"
