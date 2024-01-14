@@ -5,8 +5,6 @@
     Pedro Latasa(latasa), Ignacio Ochoa(nacho) y Pablo Ruiz(pablo)
     
     Practica grupal Proyectos de Programación
-    Fecha: 14/01/2024
-
 */
 
 #include "libreria.hpp"
