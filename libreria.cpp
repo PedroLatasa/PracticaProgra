@@ -1,10 +1,10 @@
 #include "libreria.hpp"
 
+vector<Cliente> clientes;
+
 void interfaz()
 {
     srand(time(NULL)); // planta semilla para calcular randoms
-    vector<Cliente> clientes;
-    // vector<Cuenta> cuentas;
     int numCuentas = cargaDatosClientes(clientes);
     int opcion;
     do
@@ -25,18 +25,18 @@ void interfaz()
                     do
                     {
                         eleccion = menuPrincipal();
-                        if (actual.cuentas.size() > 1 && eleccion != 0 && eleccion != 6) //casos para los que querremos que el usuario eliga sobre que cuenta operar
+                        if (int(actual.cuentas.size()) > 1 && eleccion != 0 && eleccion != 6 && eleccion != 7) //casos para los que querremos que el usuario eliga sobre que cuenta operar
                         {
                             Cuenta &cta = actual.cuentas.at(eligeCuenta(actual)); // eleccion del usuario sobre que cuenta quiere operar
-                            operaciones(eleccion, cta, actual);
+                            operaciones(eleccion, clientes, cta, actual, numCuentas);
                         }
                         else
                         {
                             Cuenta &cta = actual.cuentas.at(0);
-                            operaciones(eleccion, cta, actual);
+                            operaciones(eleccion, clientes, cta, actual, numCuentas);
                         };
-                        guardaDatos(clientes, numCuentas);
-                    } while (eleccion != 0);
+                        if(eleccion != 1 || eleccion != 2 || eleccion != 3 || eleccion != 4 || eleccion != 5 ) guardaDatos(clientes, numCuentas);
+                    } while (eleccion != 0 && eleccion!=7);
                 }
                 else
                 {
@@ -49,7 +49,8 @@ void interfaz()
             {
                 if (registro(clientes))
                 {
-                    numCuentas++; // cuando se crea un nuevo registro, habremos creado una nueva cuenta tambien
+                    numCuentas++;
+                    cout << "Numero de cuentas: " << numCuentas; // cuando se crea un nuevo registro, habremos creado una nueva cuenta tambien
                     guardaDatos(clientes, numCuentas);
                     cout << "Registro exitoso. Ahora puede iniciar sesion.\n\n";
                     // numCuentas = cargaDatosClientes(clientes); // al crear un nuevo usuario tambien se genera una nueva cuenta, por lo que querremos releer la BBDD
@@ -74,9 +75,11 @@ void interfaz()
     } while (opcion != 0);
 }
 
+
 int menuInicial()
 {
     int opcion;
+
     cout << "\t\t\t*********************\n";
     cout << "\t\t\t Bienvenido al banco\n";
     cout << "\t\t\t*********************\n";
@@ -84,15 +87,27 @@ int menuInicial()
     cout << "\t2. Crear cuenta bancaria\n";
     cout << "\t0. Salir\n";
 
-    cout << "\nSelecciona una opcion: ";
-    cin >> opcion;
-    if (opcion < 0 || opcion > 2)
-    {
-        throw runtime_error("Opcion no valida. Hasta luego!\n");
+    while (true) {
+        cout << "\nSelecciona una opcion: ";
+        cin >> opcion;
+
+        if (cin.fail()) {
+            cout << "No le he entendido. Por favor, ingrese un numero entre 0 y 2." << endl;
+            cin.clear();  
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+        } else if (opcion >= 0 && opcion <= 2) {
+            break;  
+        } else {
+            cout << "No le he entendido. Por favor, ingrese un numero entre 0 y 2." << endl;
+            cin.clear();  
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');  
+        }
     }
 
     return opcion;
 }
+
+
 
 int menuPrincipal()
 {
@@ -106,15 +121,16 @@ int menuPrincipal()
         cout << "\t4. Inversiones\n";
         cout << "\t5. Informacion de la cuenta\n";
         cout << "\t6. Cambiar informacion de perfil\n";
+        cout << "\t7. Darse de baja.\n";
         cout << "\t0. Cerrar sesion\n";
 
         cout << "\nSelecciona una opcion: ";
         cin >> eleccion;
-        if (eleccion < 0 || eleccion > 6)
+        if (eleccion < 0 || eleccion > 7)
         {
-            cout << "Opción invalida" << endl;
+            cout << "Opcion invalida" << endl;
         }
-    } while (eleccion < 0 || eleccion > 6);
+    } while (eleccion < 0 || eleccion > 7);
     return eleccion;
 }
 
@@ -133,7 +149,7 @@ int menuInformacion()
         cin >> eleccion;
         if (eleccion < 0 || eleccion > 3)
         {
-            cout << "Opción invalida" << endl;
+            cout << "Opcion invalida" << endl;
         }
     } while (eleccion < 0 || eleccion > 3);
     return eleccion;
@@ -145,19 +161,18 @@ int menuCambiarDatos()
     do
     {
         cout << "\n\t*************************\n";
-        cout << "\n\t1. Cambiar DNI.\n";
-        cout << "\t2. Cambiar nombre.\n";
-        cout << "\t3. Cambiar el primer apellido.\n";
-        cout << "\t4. Cambiar el segundo apellido.\n";
+        cout << "\t1. Cambiar nombre.\n";
+        cout << "\t2. Cambiar el primer apellido.\n";
+        cout << "\t3. Cambiar el segundo apellido.\n";
         cout << "\t0. Volver atras.\n";
 
         cout << "\nSelecciona una opcion: ";
         cin >> eleccion;
-        if (eleccion < 0 || eleccion > 4)
+        if (eleccion < 0 || eleccion > 3)
         {
-            cout << "Opción invalida" << endl;
+            cout << "Opcion invalida" << endl;
         }
-    } while (eleccion < 0 || eleccion > 4);
+    } while (eleccion < 0 || eleccion > 3);
     return eleccion;
 }
 
@@ -166,35 +181,22 @@ void cambiarDatos(int opcion, Cliente &c)
     string DNI, nombre, apellido1, apellido2;
     switch (opcion)
     {
-    case 1:
-        cout << "Ingrese su nuevo DNI: ";
-        cin >> DNI;
-        if (esDNIValido(DNI))
-        {
-            c.setDNI(DNI);
-            cout << "El DNI ha sido correctamente actualizado.";
-        }
-        else
-        {
-            cout << "El DNI introducido no es valido.";
-        }
-        break;
 
-    case 2:
+    case 1:
         cout << "Ingrese su nuevo nombre: ";
         cin >> nombre;
         c.setNombre(nombre);
         cout << "El nombre ha sido correctamente actualizado.";
         break;
 
-    case 3:
+    case 2:
         cout << "Ingrese su nuevo primer apellido: ";
         cin >> apellido1;
         c.setApell1(apellido1);
         cout << "Su primer apellido ha sido correctamente actualizado.";
         break;
 
-    case 4:
+    case 3:
 
         cout << "Ingrese su nuevo segundo apellido: ";
         cin >> apellido2;
@@ -211,7 +213,45 @@ void cambiarDatos(int opcion, Cliente &c)
     }
 }
 
-void cambiarInfo(int opcion, Cliente &c)
+int darseDeBaja(Cliente &c, int numCuentas){
+        string respuesta;
+        cout << "Hola " << c.getNombre() << ". Veo que quiere darse de baja." << endl;
+        cout << "Si se da de baja tenga en cuenta que eliminaremos todos los datos de usuario." << endl;
+        cout << "Ademas debe saber que eliminaremos todas las cuentas que queden a su nombre. " << endl;
+        cout << "Por eso le recomendamos que retire los fondos restantes de sus cuentas. " << endl;
+        cout << "Desea continuar? s: si ; n: no : ";
+        cin >> respuesta;
+        if(respuesta == "s" || respuesta == "S")
+        {
+            cout << "De acuerdo a continuacion procederemos a darle de baja como nuestro cliente." << endl;
+            cout << "Eliminamos sus cuentas: " << endl;
+            for(int i = 0; i < int(c.cuentas.size()); i++){
+                numCuentas--;
+                cout << i + 1 << ". " << c.cuentas.at(i).Numero_Tarjeta << endl;
+                c.cuentas.erase(c.cuentas.begin() + i);
+                
+            }
+
+            cout << "Eliminamos su cuenta de cliente..." << endl;
+            for(int j = 0; j < int(clientes.size()); j ++){
+                if(clientes.at(j).getDNI() == c.getDNI()){
+                    clientes.erase(clientes.begin() + j );
+                    break;
+                }
+            }
+
+            cout << "Su cuenta ha sido eliminada correctamente. " << endl;
+
+        }
+        else{
+            cout << "Operacion cancelada. " << endl;
+        }
+
+        return numCuentas;
+       
+}
+
+int cambiarInfo(int opcion, Cliente &c, int numCuentas)
 {
     switch (opcion)
     {
@@ -257,15 +297,11 @@ void cambiarInfo(int opcion, Cliente &c)
             num_cuenta = generarNumeroTarjeta();
             c.cuentas.back().Numero_Tarjeta = num_cuenta; // Simplemente incrementar el número de tarjeta
             c.cuentas.back().setFondos(0);
+            numCuentas++;
             cout << "Su cuenta ha sido annadida con numero: " << num_cuenta << endl;
         }
         else if (respuesta2 == 2)
         {
-            cout << "Ahora mismo dispone de las siguientes cuentas: " << endl;
-            for (int i = 0; i < int(c.cuentas.size()); i++)
-            {
-                cout << i + 1 << ". " << c.cuentas.at(i).Numero_Tarjeta << endl;
-            }
             if (c.cuentas.size() > 1)
             {
                 cout << "Desea la cuenta que desea eliminar marcando su numero(1,2,3..): ";
@@ -277,6 +313,7 @@ void cambiarInfo(int opcion, Cliente &c)
                     if (respuesta3 == i)
                     {
                         c.cuentas.erase(c.cuentas.begin() + i);
+                        numCuentas --;
                         break;
                     }
                 }
@@ -285,8 +322,13 @@ void cambiarInfo(int opcion, Cliente &c)
 
             else
             {
-                cout << "Lo siento pero solo dispone de una cuenta." << endl;
-                cout << "No puede eliminar su unica cuenta. " << endl;
+                cout << "Al parecer solo dispone de una cuenta. " << endl;
+                cout << "Por ello le voy a dirigir al apartado de darse de baja, ";
+                cout << "ya que no puede operar sin una cuenta.\n\n";
+                cout << "*************************************";
+                int d  =  darseDeBaja(c, numCuentas);
+                numCuentas = d;
+
             }
         }
         else
@@ -303,9 +345,72 @@ void cambiarInfo(int opcion, Cliente &c)
         cout << "Opcion no valida. Por favor, seleccione una opcion valida." << endl;
         break;
     }
+
+    return numCuentas;
 }
 
-void operaciones(int eleccion, Cuenta &cta, Cliente &c)
+bool buscarCuenta(vector<Cliente> &clientes, string num){
+    bool correctoNum = false;
+    for (int i = 0; i < int(clientes.size()); i++){
+        for (int j = 0; j < int(clientes.at(i).cuentas.size()); j++){
+            if(clientes.at(i).cuentas.at(j).getNumTarjeta() == num){
+                correctoNum = true;
+                break;
+            }
+
+        }
+
+    }
+
+    return correctoNum;
+
+}
+
+void annadirFondos(vector<Cliente> &clientes, string num, float fondos){
+    for (int i = 0; i < int(clientes.size()); i++){
+        for (int j = 0; j < int(clientes.at(i).cuentas.size()); j++){
+            if(clientes.at(i).cuentas.at(j).getNumTarjeta() == num){
+                clientes.at(i).cuentas.at(j).setFondos(float(clientes.at(i).cuentas.at(j).getFondos())+fondos);
+                break;
+            }
+
+        }
+
+    }
+
+}
+
+void realizarTransferencia(vector<Cliente> &clientes, Cuenta &cta){
+    string numDestinatario;
+    float fondos;
+    bool estado = false;
+    
+    do{
+    cout << "Ingrese el numero de cuenta del destinatario: ";
+    cin >> numDestinatario;
+    estado = buscarCuenta(clientes, numDestinatario);
+    if(estado){
+        cout << "Ingrese la cantidad de fondos que desea transferir :";
+        cin >> fondos;
+        if(cta.fondosSuficientes(fondos)){
+            cout << "De acuerdo, traspasamos " << fondos << " a la cuenta " << numDestinatario << endl;
+            cta.setFondos(float(cta.getFondos()-fondos));
+            annadirFondos(clientes, numDestinatario, fondos);
+            cout << "Se han annadido correctamente " << fondos << " a la cuenta: " << numDestinatario;
+
+        }
+        else cout << "Fondos insuficientes." << endl;
+        
+    }
+
+    else{
+        cout << "No existe nadie con ese numero de cuenta. Pruebe de nuevo." << endl;
+    }
+    }while(!estado);
+
+}
+
+void operaciones(int eleccion, vector<Cliente> &clientes , Cuenta &cta, Cliente &c, int numCuentas)
 {
     switch (eleccion)
     {
@@ -318,7 +423,7 @@ void operaciones(int eleccion, Cuenta &cta, Cliente &c)
         break;
 
     case 3:
-        // cta.hacer_Transferencia(clientes);
+        realizarTransferencia(clientes, cta);
         break;
 
     case 4:
@@ -332,7 +437,17 @@ void operaciones(int eleccion, Cuenta &cta, Cliente &c)
     case 6:
     {
         int opcion = menuInformacion();
-        cambiarInfo(opcion, c);
+        int a = cambiarInfo(opcion, c, numCuentas);
+        guardaDatos(clientes, a);
+    }
+        break;
+
+    case 7:
+    {
+    int b = darseDeBaja(c, numCuentas);
+    guardaDatos(clientes, b);
+    cout << "Sesion cerrada. Hasta luego!" << endl
+             << endl;
     }
     break;
 
@@ -403,6 +518,7 @@ int cargaDatosClientes(vector<Cliente> &cliente)
 
     return numCuentas;
 }
+
 
 int buscarCliente(vector<Cliente> clientes, string dni)
 {
@@ -493,7 +609,8 @@ string pedirContrasenna()
     string password;
     do
     {
-        cout << "Ingrese la contrasena (debe contener al menos 8 caracteres con al menos una mayuscula, una minuscula, un numero y un caracter especial '?'): ";
+        cout << "Ingrese la contrasena (debe contener al menos 8 caracteres con al menos una mayuscula,";
+        cout << " una minuscula, un numero y un caracter especial '?'): ";
         cin >> password;
         if (cumpleRequisitos(password))
         {
@@ -539,9 +656,9 @@ bool registro(vector<Cliente> &clientes)
     cout << "Registro de nuevo usuario\n";
     cout << "Ingrese el DNI del nuevo usuario: ";
     cin >> dni;
-
+    
     // Verificar si el usuario ya existe
-    if (buscarCliente(clientes, dni) == -1) // cuando no se encuentra un cliente con ese dni en nuestra BBDD
+    if (buscarCliente(clientes, dni) == -1 && esDNIValido(dni)) // cuando no se encuentra un cliente con ese dni en nuestra BBDD
     {
         cout << "Ingrese el nombre: ";
         cin >> nombre;
@@ -564,9 +681,10 @@ bool registro(vector<Cliente> &clientes)
     }
     else
     {
-        cout << "Este DNI ya esta registrado.";
+        cout << "DNI registrado o DNI invalido.";
         return registrado;
     }
+    
 }
 
 bool esDNIValido(const string &dni)
@@ -589,6 +707,7 @@ bool esDNIValido(const string &dni)
         return false;
     }
 
+
     return true;
 }
 
@@ -608,11 +727,10 @@ int eligeCuenta(Cliente c)
 
 void guardaDatos(vector<Cliente> clientes, int numCuentas)
 { // Guarda los datos
-    // guardaCuentas(cuentas);
     ofstream archivo, archivo2;
     archivo.open("datosClientes.txt"); // para windows copiar el path
-    archivo << clientes.size() << endl;
-    archivo2.open("datosCuentas.txt");
+    archivo << int(clientes.size()) << endl;
+    archivo2.open("datosCuentas.txt"); // para windows copiar el path
     archivo2 << numCuentas << endl;
     for (int i = 0; i < int(clientes.size()); i++)
     {
