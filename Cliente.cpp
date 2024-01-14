@@ -1,7 +1,7 @@
 #include "libreria.hpp"
 #include<vector>
 
-class Cliente {
+class Cliente { // realizada por luis
     protected:
         string dni, nombre, apellido1, apellido2, contrasenna;
     public:
